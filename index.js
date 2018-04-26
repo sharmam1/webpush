@@ -2,7 +2,7 @@ var express = require('express')
 var fs = require('fs');
 var app = express()
 var bodyParser = require('body-parser')
-const webpush = require('web-push');
+const webPush = require('web-push');
 
 app.use(express.static(__dirname))
 app.use(bodyParser.json())
@@ -20,7 +20,27 @@ app.post('/messages', (req, res) => {
 })
 
 app.post('/send/notifiction', (req, res) => {
- 
+  var fs = require('fs');
+  var array = fs.readFileSync('sub.txt').toString().split("\r\n");
+  const payload = req.body.title;
+  console.log(payload);
+  const options = {
+    TTL: 5
+  };
+
+  for(i in array) {
+    const subscription = JSON.parse(array[i]);
+    console.log(array[i]);
+      webPush.sendNotification(subscription, payload, options)
+      .then(function() {
+        res.sendStatus(201);
+      })
+      .catch(function(error) {
+        console.log(error);
+        res.sendStatus(500);
+      });
+
+  }
   res.sendStatus(200)
 })
 
@@ -38,25 +58,15 @@ app.post('/savesubcription', (req, res) => {
 
 app.get('/getpublickey', (req, res) => {
 
-//const vapidPublicKey = webpush.generateVAPIDKeys();;
-//const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-
+  //const vapidPublicKey = webpush.generateVAPIDKeys();;
+  //const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
   fs.readFile('key.json', function(err, buf) {
     console.log(buf.toString());
     res.send(buf.toString())
   });
-  console.log('manish')
-})
-
-app.get('/messages', (req, res) => {
-
-// Prints 2 URL Safe Base64 Encoded Strings
-//console.log(vapidKeys.publicKey, vapidKeys.privateKey);
-res.send('welcome back')
-console.log('manish')
 })
 
 app.listen(5000, () => {
-  console.log("here");
+  console.log("server running");
 })
 
