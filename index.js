@@ -15,7 +15,7 @@ var message = [
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
-var cors = require(‘cors’);
+var cors = require('cors’);
 
 var options = {
  key: fs.readFileSync('key.pem'),
@@ -83,6 +83,6 @@ app.get('/getpublickey', (req, res) => {
   console.log("server running");
 })*/
 
-http.createServer(app).listen(80);
+//http.createServer(app).listen(80);
 https.createServer(options, app).listen(443);
 
