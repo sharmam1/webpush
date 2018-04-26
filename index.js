@@ -1,5 +1,4 @@
 var express = require('express')
-var fs = require('fs');
 var app = express()
 var bodyParser = require('body-parser')
 const webPush = require('web-push');
@@ -12,6 +11,16 @@ var message = [
   {name: 'sharma', message: 'hey hello world'},
   {name: 'kumar', message: 'hey hello world1'},
 ]
+
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+var options = {
+ key: fs.readFileSync('key.pem'),
+ cert: fs.readFileSync('cert.pem')
+};
+
 
 app.post('/messages', (req, res) => {
   console.log(req.body);
@@ -66,7 +75,10 @@ app.get('/getpublickey', (req, res) => {
   });
 })
 
-app.listen(5000, () => {
+/*app.listen(5000, () => {
   console.log("server running");
-})
+})*/
+
+http.createServer(app).listen(80);
+https.createServer(options, app).listen(443);
 
