@@ -15,6 +15,7 @@ var message = [
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
+var cors = require(‘cors’);
 
 var options = {
  key: fs.readFileSync('key.pem'),
@@ -28,6 +29,7 @@ app.post('/messages', (req, res) => {
   res.sendStatus(200)
 })
 
+app.use(cors({origin: 'https://rde-517-msharma.us-east-1.int.timeinc.net'}));
 app.post('/send/notifiction', (req, res) => {
   var fs = require('fs');
   var array = fs.readFileSync('sub.txt').toString().split("\r\n");
@@ -53,6 +55,7 @@ app.post('/send/notifiction', (req, res) => {
   res.sendStatus(200)
 })
 
+app.use(cors({origin: 'https://rde-517-msharma.us-east-1.int.timeinc.net'}));
 app.post('/savesubcription', (req, res) => {
   console.log(req.data)
   //message.push(req.body)
@@ -65,6 +68,7 @@ app.post('/savesubcription', (req, res) => {
   res.sendStatus(200)
 })
 
+app.use(cors({origin: 'https://rde-517-msharma.us-east-1.int.timeinc.net'}));
 app.get('/getpublickey', (req, res) => {
 
   //const vapidPublicKey = webpush.generateVAPIDKeys();;
